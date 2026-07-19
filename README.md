@@ -475,6 +475,69 @@ npm start        # Serves API + built client from Express
 
 ---
 
+## 🖥️ User Flow & UI Dashboard Guide
+
+The dashboard is structured into a left-side Control Panel (for admin/user actions) and a main section containing the three data tables (Sales, Users, Payouts) with pagination controls.
+
+Here is the step-by-step user flow to test the system in the UI:
+
+### 1. Register a New Affiliate (User)
+* **Where to click:** In the sidebar on the left, locate the **Register New Affiliate** card.
+* **Actions:**
+  1. Type a unique **User ID** (e.g. `jane_doe`).
+  2. Type the user's display **Name** (e.g. `Jane Doe`).
+  3. Click **Register Affiliate**.
+  4. The user is created and will immediately appear in the **Users Directory** table. By default, they start in the **Probation** state with a balance of `₹0.00`.
+
+### 2. Record a Pending Sale
+* **Where to click:** In the sidebar, locate the **Register Sale** card.
+* **Actions:**
+  1. Select the affiliate (e.g. `Jane Doe`) from the dropdown. *(Note: Terminated users are automatically filtered out and won't appear).*
+  2. Select the **Brand** (e.g. `brand_1`).
+  3. Enter the total sale **Earning** amount (e.g. `500.00`).
+  4. Click **Register Sale**.
+  5. The sale is created and appears in the **Affiliate Sales** table in the main panel under the **Pending** tab.
+
+### 3. Run the Advance Payout Job (For Trusted Users)
+* **Where to click:** Look at the top metrics bar (Stats Cards) and click the **Run Advance Job** button (styled with a play/lightning icon).
+* **Behavior:**
+  * If the sale belongs to a **Probationary** user (like your newly registered `Jane Doe`), running the job will skip them (protecting the platform against fraud).
+  * If the sale belongs to a **Trusted** user (e.g., `john_doe`), they will immediately receive a 10% advance payout (e.g., ₹50.00 on a ₹500.00 sale) which is credited to their **Withdrawable Balance**. An `advance_payout` transaction is recorded in the **Payout Transaction Ledger** table.
+
+### 4. Reconcile a Sale (Approve or Reject)
+* **Where to click:** In the **Affiliate Sales** table.
+* **Actions:**
+  * Find the pending sale. In the **Actions** column, you can click:
+    * **Approve**: Resolves the sale. The affiliate receives the remaining 90% of the sale earnings, and their trust progress counter increments. Once they hit 3 approved sales, they are automatically promoted to **Trusted** status!
+    * **Reject**: Rejects the sale. If an advance was already paid to the affiliate, the system automatically claws it back, debiting the user's balance (allowing it to go negative if necessary).
+  * *Tip:* You can also use the checkboxes on the left side of the table rows and click **Approve Selected** or **Reject Selected** at the bottom of the table to perform bulk reconciliations.
+
+### 5. Withdraw Earnings (With Cooldown)
+* **Where to click:** In the sidebar, locate the **Initiate Withdrawal** card.
+* **Actions:**
+  1. Select the affiliate (e.g. `John Doe`) from the dropdown.
+  2. Enter the withdrawal **Amount** (e.g. `50.00`).
+  3. Click **Withdraw Funds**.
+  4. The amount is debited from the user's balance and recorded as a pending withdrawal in the **Payout Transaction Ledger** table.
+  5. *Edge Case:* Try withdrawing again immediately — the system will enforce the 24-hour rate limit security rule and block the request!
+
+### 6. Simulate Gateway Failure & Recovery
+* **Where to click:** In the **Payout Transaction Ledger** table.
+* **Actions:**
+  1. Find a completed withdrawal transaction.
+  2. Under the **Simulations** column, click **Fail** or **Cancel**.
+  3. The system simulates a webhook callback from the payment gateway. The withdrawn funds are immediately re-credited to the user's balance, and their 24-hour withdrawal rate-limit cooldown is cleared, allowing them to retry right away.
+
+### 7. Terminate an Affiliate (Deactivation)
+* **Where to click:** In the **Users Directory** table.
+* **Actions:**
+  1. Find the target user.
+  2. In the **Actions** column, click the **Terminate** button (red border outline).
+  3. Confirmed users are visually crossed out (strikethrough on name, faded row opacity) and their status is marked as **Inactive**.
+  4. *Security Policy:* They are immediately blocked from registering new sales, initiating withdrawals, or receiving advance payouts.
+
+---
+
 ## ☁️ Deployment
 
 ### 1. Backend (Render)
