@@ -325,7 +325,7 @@ async function main() {
     log.success('D7: API failure gateway callback processes recovery');
 
     log.header('COMPREHENSIVE TEST SUITE RESULT');
-    log.success('ALL TESTS PASSED! THE SYSTEM IS 100% CORRECT & COMPLIANT! 🎉\n');
+    log.success('ALL TESTS PASSED! THE SYSTEM IS 100% CORRECT & COMPLIANT!\n');
 
   } catch (error) {
     log.error(`Test run encountered a failure:\n${error.stack}`);

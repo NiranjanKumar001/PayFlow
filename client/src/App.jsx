@@ -158,14 +158,32 @@ function App() {
     <>
       {toast && (
         <div className={`toast-msg toast-${toast.type}`}>
-          {toast.type === 'success' ? '✓' : '✕'} {toast.message}
+          {toast.type === 'success' ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', color: '#10b981', flexShrink: 0 }}>
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', color: '#ef4444', flexShrink: 0 }}>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          )}
+          {toast.message}
         </div>
       )}
 
       {/* Header */}
       <header className="app-header">
         <div className="logo-container">
-          <div className="logo-icon">₹</div>
+          <div className="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 3h12" />
+              <path d="M6 8h12" />
+              <path d="m6 13 8.5 8" />
+              <path d="M6 13h3" />
+              <path d="M9 13c0-3.5 2.5-6 6-6" />
+            </svg>
+          </div>
           <div>
             <div className="logo-text">PayFlow</div>
             <div style={{ fontSize: '11px', color: 'hsl(var(--text-secondary))' }}>

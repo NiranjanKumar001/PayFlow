@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 // Connect to MongoDB, then start Express
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`\n  🚀 Payout API Server running at http://localhost:${PORT}`);
-    console.log(`  📡 API base: http://localhost:${PORT}/api\n`);
+    console.log(`\n  [Server] Payout API Server running at http://localhost:${PORT}`);
+    console.log(`  [Server] API base: http://localhost:${PORT}/api\n`);
   });
 });

@@ -1,4 +1,4 @@
-# 💰 PayFlow: Beginner-Friendly Explainer
+# PayFlow: Beginner-Friendly Explainer
 
 Welcome to **PayFlow**! This document explains what this project is, how it works under the hood, and how to run it in a very simple, beginner-friendly way.
 

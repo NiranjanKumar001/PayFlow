@@ -1,4 +1,4 @@
-# 💰 User Payout Management System
+# User Payout Management System
 
 A comprehensive **Low-Level Design (LLD)** and working implementation for managing user payouts in an affiliate sales platform — built with **Node.js**, **Express**, **MongoDB**, and a modern **React interactive dashboard**.
 
