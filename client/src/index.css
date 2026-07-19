@@ -26,8 +26,8 @@
   --destructive: #7f1d1d;
   --destructive-foreground: #fef2f2;
   
-  --border: #27272a;
-  --input: #27272a;
+  --border: #52525b;
+  --input: #52525b;
   --ring: #d4d4d8;
   
   --radius: 8px;
@@ -83,7 +83,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   padding-bottom: 24px;
 }
 
@@ -104,7 +104,7 @@ body {
   justify-content: center;
   font-size: 16px;
   font-weight: 700;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
 }
 
 .logo-text {
@@ -123,7 +123,7 @@ body {
   border-radius: var(--radius);
   background-color: var(--muted);
   padding: 4px;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
 }
 
 .tab-btn {
@@ -150,7 +150,7 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
 }
 
 /* Stats Dashboard cards */
@@ -163,7 +163,7 @@ body {
 
 .stat-box {
   background-color: var(--card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
   display: flex;
@@ -217,7 +217,7 @@ body {
 /* Shadcn Cards */
 .card {
   background-color: var(--card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   display: flex;
@@ -229,7 +229,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   font-weight: 600;
   font-size: 16px;
   letter-spacing: -0.01em;
@@ -252,13 +252,13 @@ body {
   font-weight: 500;
   color: var(--muted-foreground);
   padding: 12px 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   background-color: rgba(24, 24, 27, 0.4);
 }
 
 .premium-table td {
   padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   color: var(--foreground);
   vertical-align: middle;
 }
@@ -294,7 +294,7 @@ form {
 .form-control {
   background-color: var(--background);
   color: var(--foreground);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 10px 14px;
   font-size: 14px;
@@ -328,7 +328,7 @@ select.form-control {
   appearance: none;
   width: 16px;
   height: 16px;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 4px;
   background-color: var(--background);
   cursor: pointer;
@@ -405,7 +405,7 @@ select.form-control {
   justify-content: space-between;
   align-items: center;
   background-color: rgba(24, 24, 27, 0.8);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   padding: 12px 24px;
 }
 
@@ -422,7 +422,7 @@ select.form-control {
   height: 36px;
   padding: 0 16px;
   cursor: pointer;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   background-color: var(--background);
   color: var(--foreground);
   transition: var(--transition-fast);
@@ -479,7 +479,7 @@ select.form-control {
   align-items: center;
   gap: 12px;
   background-color: var(--card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius);
   padding: 16px 20px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
@@ -511,7 +511,7 @@ select.form-control {
   justify-content: space-between;
   background-color: var(--background);
   color: var(--foreground);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 10px 14px;
   font-size: 14px;
@@ -539,7 +539,7 @@ select.form-control {
   left: 0;
   width: 100%;
   background-color: var(--popover);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   z-index: 50;
   max-height: 200px;
