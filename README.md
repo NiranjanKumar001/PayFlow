@@ -114,6 +114,7 @@ Every affiliate sale enters the system as **Pending**. The system must:
 | `lastWithdrawalAt` | `Date` | Timestamp of last successful withdrawal (24h rate limit). Default: `null` |
 | `isTrusted` | `Boolean` | Eligibility for 10% advance payout (requires 3 approved sales). Default: `false` |
 | `approvedSalesCount` | `Number` | Total count of reconciled approved sales. Default: `0` |
+| `isTerminated` | `Boolean` | Flag indicating whether the user is deactivated/terminated. Default: `false` |
 | `timestamps` | — | Auto-managed `createdAt` and `updatedAt` |
 
 #### `sales`
@@ -207,9 +208,10 @@ All `PayoutService` methods execute inside **MongoDB multi-document transactions
 
 ### Users
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/users` | List all users with balances |
+| Method | Endpoint | Body | Description |
+|---|---|---|---|
+| `GET` | `/api/users` | — | List all users with balances |
+| `POST` | `/api/users/:id/terminate` | — | Terminate/Deactivate a user (disables new sales and withdrawals) |
 
 ---
 
@@ -496,11 +498,25 @@ The React client is optimized to run as a static Single Page Application (SPA) o
 
 ## 🧪 Running Tests
 
+### CI Pipeline
+We have integrated a **GitHub Actions CI workflow** (`.github/workflows/ci.yml`) that spins up a MongoDB container and executes the test runner on every push/pull request to `main`.
+
+### Running Locally
+To execute the comprehensive test suite:
 ```bash
 npm test
 ```
 
-The automated test script exercises the full lifecycle:
+### Running Individual Modular Tests
+You can run specific groups by executing their respective files directly with Node:
+* **Domain Model Tests**: `node server/src/tests/domain.test.js`
+* **Service/Job Tests**: `node server/src/tests/service.test.js`
+* **Withdrawal & Cooldown Tests**: `node server/src/tests/withdrawal.test.js`
+* **HTTP API E2E Tests**: `node server/src/tests/api.test.js`
+* **Trust & Probation Tests**: `node server/src/tests/trust.test.js`
+* **User Termination Security Tests**: `node server/src/tests/termination.test.js`
+
+The automated test suites exercise the full lifecycle:
 
 1. ✅ Create users and sales
 2. ✅ Run advance payout job (+ idempotency check)
@@ -510,6 +526,7 @@ The automated test script exercises the full lifecycle:
 6. ✅ Failed payout recovery
 7. ✅ Edge cases (double advance, negative balance, concurrent requests)
 8. ✅ Trust & Probation Tier (probationary exclusion, promotion on 3rd approved sale, subsequent advance eligibility)
+9. ✅ Affiliate User Termination (blocks new sales, blocks withdrawals, skips advance job)
 
 ---
 
@@ -532,6 +549,15 @@ User-Payout-Management-System/
 │   │   │   └── payouts.js         # Withdrawal + recovery endpoints
 │   │   ├── middleware/
 │   │   │   └── errorHandler.js    # Centralized error handling
+│   │   ├── tests/                 # Modularized test suites
+│   │   │   ├── helpers.js         # Shared test environment & DB connection
+│   │   │   ├── domain.test.js     # User & Sale unit model tests
+│   │   │   ├── service.test.js    # Advance job & reconciliation tests
+│   │   │   ├── withdrawal.test.js # Withdrawal & gateway failures tests
+│   │   │   ├── api.test.js        # E2E Express API routes tests
+│   │   │   ├── trust.test.js      # Probation tier & trusted status tests
+│   │   │   ├── termination.test.js # User deactivation security tests
+│   │   │   └── run.js             # Sequential main test runner
 │   │   └── app.js                 # Express application setup
 │   ├── index.js                   # Server entry point
 │   └── package.json
