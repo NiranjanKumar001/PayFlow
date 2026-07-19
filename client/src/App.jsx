@@ -1,6 +1,50 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { api } from './services/api';
 import './App.css';
+
+function CustomSelect({ value, onChange, options, placeholder = "Select option", size = "md", style }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find(opt => opt.value === value);
+
+  return (
+    <div className={`custom-select-container ${size}`} ref={dropdownRef} style={style}>
+      <div className="custom-select-trigger" onClick={() => setIsOpen(!isOpen)}>
+        <span>{selectedOption ? selectedOption.label : placeholder}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`chevron ${isOpen ? 'open' : ''}`}>
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </div>
+      {isOpen && (
+        <div className="custom-select-options">
+          {options.map((opt) => (
+            <div
+              key={opt.value}
+              className={`custom-select-option ${opt.value === value ? 'selected' : ''}`}
+              onClick={() => {
+                onChange(opt.value);
+                setIsOpen(false);
+              }}
+            >
+              {opt.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -251,30 +295,28 @@ function App() {
               <div className="card-title">
                 <span>Affiliate Sales</span>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  <select
-                    className="form-control"
-                    style={{ width: '130px', padding: '6px' }}
+                  <CustomSelect
+                    size="sm"
+                    style={{ width: '130px' }}
                     value={salesFilter.userId}
-                    onChange={(e) => setSalesFilter({ ...salesFilter, userId: e.target.value })}
-                  >
-                    <option value="">All Users</option>
-                    {users.map((u) => (
-                      <option key={u._id} value={u._id}>
-                        {u.name}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="form-control"
-                    style={{ width: '130px', padding: '6px' }}
+                    onChange={(val) => setSalesFilter({ ...salesFilter, userId: val })}
+                    options={[
+                      { value: '', label: 'All Users' },
+                      ...users.map((u) => ({ value: u._id, label: u.name }))
+                    ]}
+                  />
+                  <CustomSelect
+                    size="sm"
+                    style={{ width: '130px' }}
                     value={salesFilter.status}
-                    onChange={(e) => setSalesFilter({ ...salesFilter, status: e.target.value })}
-                  >
-                    <option value="">All Statuses</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
+                    onChange={(val) => setSalesFilter({ ...salesFilter, status: val })}
+                    options={[
+                      { value: '', label: 'All Statuses' },
+                      { value: 'pending', label: 'Pending' },
+                      { value: 'approved', label: 'Approved' },
+                      { value: 'rejected', label: 'Rejected' }
+                    ]}
+                  />
                 </div>
               </div>
 
@@ -429,19 +471,16 @@ function App() {
             <div className="card">
               <div className="card-title">
                 <span>Payout Transaction Ledger</span>
-                <select
-                  className="form-control"
-                  style={{ width: '150px', padding: '6px' }}
+                <CustomSelect
+                  size="sm"
+                  style={{ width: '150px' }}
                   value={payoutsFilter.userId}
-                  onChange={(e) => setPayoutsFilter({ userId: e.target.value })}
-                >
-                  <option value="">All Users</option>
-                  {users.map((u) => (
-                    <option key={u._id} value={u._id}>
-                      {u.name}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(val) => setPayoutsFilter({ userId: val })}
+                  options={[
+                    { value: '', label: 'All Users' },
+                    ...users.map((u) => ({ value: u._id, label: u.name }))
+                  ]}
+                />
               </div>
 
               <div className="table-container">
@@ -528,30 +567,24 @@ function App() {
             <form onSubmit={handleCreateSale}>
               <div className="form-group">
                 <label className="form-label">Affiliate User</label>
-                <select
-                  className="form-control"
+                <CustomSelect
                   value={newSale.userId}
-                  onChange={(e) => setNewSale({ ...newSale, userId: e.target.value })}
-                >
-                  {users.map((u) => (
-                    <option key={u._id} value={u._id}>
-                      {u.name}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(val) => setNewSale({ ...newSale, userId: val })}
+                  options={users.map((u) => ({ value: u._id, label: u.name }))}
+                />
               </div>
 
               <div className="form-group">
                 <label className="form-label">Brand</label>
-                <select
-                  className="form-control"
+                <CustomSelect
                   value={newSale.brand}
-                  onChange={(e) => setNewSale({ ...newSale, brand: e.target.value })}
-                >
-                  <option value="brand_1">Brand 1</option>
-                  <option value="brand_2">Brand 2</option>
-                  <option value="brand_3">Brand 3</option>
-                </select>
+                  onChange={(val) => setNewSale({ ...newSale, brand: val })}
+                  options={[
+                    { value: 'brand_1', label: 'Brand 1' },
+                    { value: 'brand_2', label: 'Brand 2' },
+                    { value: 'brand_3', label: 'Brand 3' }
+                  ]}
+                />
               </div>
 
               <div className="form-group">
@@ -579,17 +612,14 @@ function App() {
             <form onSubmit={handleWithdrawal}>
               <div className="form-group">
                 <label className="form-label">Affiliate User</label>
-                <select
-                  className="form-control"
+                <CustomSelect
                   value={newWithdrawal.userId}
-                  onChange={(e) => setNewWithdrawal({ ...newWithdrawal, userId: e.target.value })}
-                >
-                  {users.map((u) => (
-                    <option key={u._id} value={u._id}>
-                      {u.name} (Bal: ₹{u.withdrawableBalance.toFixed(2)})
-                    </option>
-                  ))}
-                </select>
+                  onChange={(val) => setNewWithdrawal({ ...newWithdrawal, userId: val })}
+                  options={users.map((u) => ({
+                    value: u._id,
+                    label: `${u.name} (Bal: ₹${u.withdrawableBalance.toFixed(2)})`
+                  }))}
+                />
               </div>
 
               <div className="form-group">
