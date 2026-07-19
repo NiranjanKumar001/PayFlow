@@ -561,6 +561,28 @@ User-Payout-Management-System/
 
 ---
 
+## 🛡️ Security Analysis: Preventing Advance Payout Fraud
+
+### The Vulnerability: "Hit-and-Run" Affiliate Fraud
+Under a basic 10% advance payout rule, an affiliate can sign up, register a high-value fake sale (e.g., ₹2,000 earning), immediately receive a ₹200 advance payout, withdraw it, and abandon the account. When the admin later rejects/cancels the fake sale, the system claws back the ₹200, bringing the user's balance to `-₹200`. However, since the fraudster has already abandoned the account, the platform suffers a direct loss of **₹200**.
+
+### Why a "Minimum Withdrawal Threshold" is Ineffective
+A simple solution might seem to be setting a **Minimum Withdrawal Threshold** (e.g., must have at least ₹200 to withdraw). However, this is easily bypassed:
+1. **Collateral Inflation**: The attacker simply inflates the fake sale's registered value (e.g., registering a ₹2,000 sale to hit the ₹200 advance threshold).
+2. **Bulk Accumulation**: The attacker registers multiple smaller fake sales until the accumulated advances exceed the minimum withdrawal limit.
+3. **Legitimate User Friction**: It penalizes real, low-volume affiliates who have to wait a long time to withdraw genuine earnings, harming the platform's reputation.
+
+### The Recommended Solution: Trust-Based Probation Tiers
+To robustly secure the platform, we recommend a **Trust/Probation Tier** system:
+1. **New User Probation**: When a user signs up, they are placed in a "Probationary" tier. During this phase, **no advance payouts are issued**.
+2. **Verification Requirement**: Their first $N$ sales (e.g., 3 or 5 sales) must be fully reconciled and **Approved** by the admin.
+3. **Trust Promotion**: Once they establish a history of $N$ valid sales, their account status is promoted to "Trusted," unlocking the automatic 10% advance payout on future pending sales.
+4. **Dynamic Caps**: High-value sales from newly trusted users can be capped to limit the maximum advance exposure (e.g., max ₹50 advance per sale) until they reach higher trust tiers.
+
+By moving the security logic from a withdrawal restriction (minimum threshold) to an identity/reputation check (Trust Tier), the store owner is fully protected without adding friction for verified affiliates.
+
+---
+
 ## 📄 License
 
 This project is built as part of an SDE Intern assignment submission.
