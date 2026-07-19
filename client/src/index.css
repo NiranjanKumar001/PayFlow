@@ -469,6 +469,29 @@ select.form-control {
   background-color: #dc2626;
 }
 
+.btn-terminate {
+  background-color: rgba(239, 68, 68, 0.08);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-terminate:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+.badge-terminated {
+  background-color: rgba(24, 24, 27, 0.5);
+  color: #71717a;
+  border: 1px solid #3f3f46;
+  font-weight: 500;
+  text-decoration: none;
+}
+
 .btn-sm {
   height: 28px;
   padding: 0 10px;

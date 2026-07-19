@@ -108,39 +108,33 @@ export default function UsersTable({ users, isLoading, handleTerminateUser }) {
                 </td>
                 <td style={{ minWidth: '100px', textAlign: 'center' }}>
                   {u.isTerminated ? (
-                    <span style={{
-                      display: 'inline-block',
-                      padding: '4px 8px',
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                      color: '#ef4444',
-                      border: '1px solid rgba(239, 68, 68, 0.2)',
-                      borderRadius: '4px',
-                      textDecoration: 'none',
-                      textAlign: 'center',
-                      width: '74px',
-                      boxSizing: 'border-box'
-                    }}>
+                    <span
+                      className="badge-terminated"
+                      style={{
+                        display: 'inline-block',
+                        padding: '4px 8px',
+                        fontSize: '11px',
+                        borderRadius: '4px',
+                        textAlign: 'center',
+                        width: '74px',
+                        boxSizing: 'border-box'
+                      }}
+                    >
                       Terminated
                     </span>
                   ) : (
                     <button
-                      className="btn"
+                      className="btn btn-terminate"
                       style={{
                         padding: '4px 8px',
                         fontSize: '11px',
-                        backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                        color: '#ef4444',
-                        border: '1px solid rgba(239, 68, 68, 0.3)',
                         borderRadius: '4px',
                         width: '74px',
                         height: '22px',
                         boxSizing: 'border-box',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
+                        justifyContent: 'center'
                       }}
                       onClick={() => {
                         if (confirm(`Are you sure you want to terminate affiliate user ${u.name}?`)) {
