@@ -31,7 +31,7 @@ A comprehensive **Low-Level Design (LLD)** and working implementation for managi
 
 Every affiliate sale enters the system as **Pending**. The system must:
 
-1. **Advance Payout** — Automatically pay users **10%** of earnings for each pending sale.
+1. **Advance Payout** — Automatically pay users **10%** of earnings for each pending sale once they are **Trusted** (requires 3 approved sales). New/probationary users do not receive advance payouts.
 2. **Reconciliation** — An admin later marks each sale as **Approved** or **Rejected**, triggering a final payout calculation that accounts for any advance already paid.
 3. **Withdrawal** — Users can withdraw their balance, but are limited to **one withdrawal every 24 hours**.
 4. **Failed Payout Recovery** — If a withdrawal fails, is cancelled, or is rejected by the payment gateway, the amount is credited back and the user can retry immediately.
@@ -83,20 +83,20 @@ Every affiliate sale enters the system as **Pending**. The system must:
 ### Entity-Relationship Diagram
 
 ```
-┌──────────────────┐       ┌──────────────────────┐       ┌─────────────────────┐
-│      USERS       │       │        SALES          │       │      PAYOUTS        │
-├──────────────────┤       ├──────────────────────┤       ├─────────────────────┤
-│ id (PK)          │──┐    │ id (PK)              │──┐    │ id (PK)             │
-│ name             │  │    │ user_id (FK) ────────│──┘──▶ │ user_id (FK)        │
-│ withdrawable_    │  │    │ brand                │       │ type                │
-│   balance        │  └──▶ │ status               │       │ amount              │
-│ last_withdrawal_ │       │ earning              │       │ status              │
-│   at             │       │ advance_status       │       │ reference_id        │
-│ created_at       │       │ advance_amount       │       │ created_at          │
-│ updated_at       │       │ reconciled_at        │       │ updated_at          │
-└──────────────────┘       │ created_at           │       └─────────────────────┘
-                           │ updated_at           │
-                           └──────────────────────┘
+┌──────────────────────┐       ┌──────────────────────┐       ┌─────────────────────┐
+│        USERS         │       │        SALES          │       │      PAYOUTS        │
+├──────────────────────┤       ├──────────────────────┤       ├─────────────────────┤
+│ id (PK)              │──┐    │ id (PK)              │──┐    │ id (PK)             │
+│ name                 │  │    │ user_id (FK) ────────│──┘──▶ │ user_id (FK)        │
+│ withdrawable_        │  │    │ brand                │       │ type                │
+│   balance            │  └──▶ │ status               │       │ amount              │
+│ last_withdrawal_     │       │ earning              │       │ status              │
+│   at                 │       │ advance_status       │       │ reference_id        │
+│ is_trusted           │       │ advance_amount       │       │ created_at          │
+│ approved_sales_count │       │ reconciled_at        │       │ updated_at          │
+│ created_at           │       │ created_at           │       └─────────────────────┘
+│ updated_at           │       │ updated_at           │
+└──────────────────────┘       └──────────────────────┘
                     
                     USERS  1 ──── * SALES
                     USERS  1 ──── * PAYOUTS
@@ -112,6 +112,8 @@ Every affiliate sale enters the system as **Pending**. The system must:
 | `name` | `String` | Display name |
 | `withdrawableBalance` | `Number` | Current balance (can go negative on rejections). Default: `0` |
 | `lastWithdrawalAt` | `Date` | Timestamp of last successful withdrawal (24h rate limit). Default: `null` |
+| `isTrusted` | `Boolean` | Eligibility for 10% advance payout (requires 3 approved sales). Default: `false` |
+| `approvedSalesCount` | `Number` | Total count of reconciled approved sales. Default: `0` |
 | `timestamps` | — | Auto-managed `createdAt` and `updatedAt` |
 
 #### `sales`
@@ -145,7 +147,7 @@ Every affiliate sale enters the system as **Pending**. The system must:
 ### `User` — Domain Model
 ```
 User
-├── Properties: id, name, withdrawable_balance, last_withdrawal_at
+├── Properties: id, name, withdrawable_balance, last_withdrawal_at, is_trusted, approved_sales_count
 ├── canWithdraw()     → checks 24h cooldown & positive balance
 ├── credit(amount)    → increases withdrawable_balance
 └── debit(amount)     → decreases withdrawable_balance
@@ -507,6 +509,7 @@ The automated test script exercises the full lifecycle:
 5. ✅ Withdrawal with 24h rate limit enforcement
 6. ✅ Failed payout recovery
 7. ✅ Edge cases (double advance, negative balance, concurrent requests)
+8. ✅ Trust & Probation Tier (probationary exclusion, promotion on 3rd approved sale, subsequent advance eligibility)
 
 ---
 
