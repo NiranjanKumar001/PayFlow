@@ -341,7 +341,7 @@ COMMIT
 | 2 | **Rejected sale clawback** | Advance amount is debited from user balance; balance can go negative |
 | 3 | **Negative balance** | Allowed — future approved sales offset it; withdrawals blocked at ≤ 0 |
 | 4 | **24-hour withdrawal limit** | `last_withdrawal_at` checked in transaction; returns `429 Too Many Requests` |
-| 5 | **Concurrent withdrawal race** | SQLite's `BEGIN IMMEDIATE` serializes writes; second request sees updated state |
+| 5 | **Concurrent withdrawal race** | MongoDB transactions with document-level write locks serialize writes; second request sees updated state |
 | 6 | **Failed/cancelled payout** | Amount re-credited; `last_withdrawal_at` reset to `NULL` for immediate retry |
 | 7 | **Reconcile non-pending sale** | Returns `400 Bad Request` — only pending sales can be reconciled |
 | 8 | **Withdraw more than balance** | Returns `400 Bad Request` with insufficient balance error |
@@ -355,7 +355,7 @@ COMMIT
 | Decision | Why | Trade-off |
 |---|---|---|
 | **Materialized `withdrawable_balance`** | O(1) balance lookups; instant withdrawal checks | Must be kept in sync via transactions (vs. computing from ledger on every read) |
-| **SQLite** | Zero-config, ACID-compliant, single-file, perfect for demo & testing | Not horizontally scalable — acceptable for an LLD assignment |
+| **MongoDB Atlas** | Fully managed cloud database with built-in multi-document ACID transactions | Requires network connection; slightly more configuration than SQLite |
 | **Ledger-style `payouts` table** | Full audit trail of every money movement; easy debugging | Storage grows linearly with transactions |
 | **`advance_status` flag on sales** | Simple, robust idempotency for the advance job | Extra column per sale row |
 | **Reset `last_withdrawal_at` on failure** | User isn't unfairly penalized for gateway errors | Adds slight complexity to recovery logic |
