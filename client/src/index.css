@@ -251,13 +251,13 @@ body {
 .premium-table th {
   font-weight: 500;
   color: var(--muted-foreground);
-  padding: 12px 24px;
+  padding: 10px 14px;
   border-bottom: 1.5px solid var(--border);
   background-color: rgba(24, 24, 27, 0.4);
 }
 
 .premium-table td {
-  padding: 16px 24px;
+  padding: 12px 14px;
   border-bottom: 1.5px solid var(--border);
   color: var(--foreground);
   vertical-align: middle;

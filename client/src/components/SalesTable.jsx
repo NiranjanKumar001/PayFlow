@@ -87,7 +87,7 @@ export default function SalesTable({
               <th>Advance status</th>
               <th>Advance</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th style={{ width: '150px', minWidth: '150px', textAlign: 'center' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -156,17 +156,19 @@ export default function SalesTable({
                   <td>
                     <span className={`badge badge-${sale.status}`}>{sale.status}</span>
                   </td>
-                  <td>
+                  <td style={{ minWidth: '150px', textAlign: 'center' }}>
                     {sale.status === 'pending' ? (
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
                         <button
                           className="btn btn-success btn-sm"
+                          style={{ padding: '0 8px', height: '24px', fontSize: '11px' }}
                           onClick={() => handleReconcileSale(sale._id, 'approved')}
                         >
                           Approve
                         </button>
                         <button
                           className="btn btn-danger btn-sm"
+                          style={{ padding: '0 8px', height: '24px', fontSize: '11px' }}
                           onClick={() => handleReconcileSale(sale._id, 'rejected')}
                         >
                           Reject

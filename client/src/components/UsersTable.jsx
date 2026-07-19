@@ -47,7 +47,7 @@ export default function UsersTable({ users, isLoading, handleTerminateUser }) {
               <th>Trust Status</th>
               <th>Withdrawable Balance</th>
               <th>Last Withdrawal</th>
-              <th>Actions</th>
+              <th style={{ width: '100px', minWidth: '100px', textAlign: 'center' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -82,9 +82,9 @@ export default function UsersTable({ users, isLoading, handleTerminateUser }) {
               </tr>
             ) : (
               users.map((u) => (
-              <tr key={u._id} style={u.isTerminated ? { opacity: 0.5, textDecoration: 'line-through' } : {}}>
+              <tr key={u._id} style={u.isTerminated ? { opacity: 0.65 } : {}}>
                 <td style={{ fontFamily: 'monospace' }}>{u._id}</td>
-                <td style={{ fontWeight: 600 }}>{u.name}</td>
+                <td style={{ fontWeight: 600, textDecoration: u.isTerminated ? 'line-through' : 'none' }}>{u.name}</td>
                 <td>
                   {u.isTerminated ? (
                     <span style={{ color: 'hsl(var(--text-secondary))', fontSize: '12px' }}>Inactive</span>
@@ -106,19 +106,41 @@ export default function UsersTable({ users, isLoading, handleTerminateUser }) {
                     ? new Date(u.lastWithdrawalAt).toLocaleString()
                     : 'No withdrawals yet'}
                 </td>
-                <td>
+                <td style={{ minWidth: '100px', textAlign: 'center' }}>
                   {u.isTerminated ? (
-                    <span style={{ color: '#ef4444', fontWeight: 600, fontSize: '11px', textDecoration: 'none', display: 'inline-block' }}>Terminated</span>
+                    <span style={{
+                      display: 'inline-block',
+                      padding: '4px 8px',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                      color: '#ef4444',
+                      border: '1px solid rgba(239, 68, 68, 0.2)',
+                      borderRadius: '4px',
+                      textDecoration: 'none',
+                      textAlign: 'center',
+                      width: '74px',
+                      boxSizing: 'border-box'
+                    }}>
+                      Terminated
+                    </span>
                   ) : (
                     <button
-                      className="btn btn-secondary"
+                      className="btn"
                       style={{
                         padding: '4px 8px',
                         fontSize: '11px',
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.15)',
                         color: '#ef4444',
-                        border: '1px solid rgba(239, 68, 68, 0.2)',
-                        textDecoration: 'none'
+                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                        borderRadius: '4px',
+                        width: '74px',
+                        height: '22px',
+                        boxSizing: 'border-box',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
                       }}
                       onClick={() => {
                         if (confirm(`Are you sure you want to terminate affiliate user ${u.name}?`)) {
