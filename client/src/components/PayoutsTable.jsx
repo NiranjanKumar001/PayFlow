@@ -98,16 +98,17 @@ export default function PayoutsTable({
                   <td>{new Date(p.createdAt).toLocaleTimeString()}</td>
                   <td>
                     {p.type === 'withdrawal' && p.status === 'completed' ? (
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'flex', gap: '4px' }}>
                         <button
                           className="btn btn-danger btn-sm"
+                          style={{ padding: '3px 8px', fontSize: '11px' }}
                           onClick={() => handlePayoutStatusUpdate(p._id, 'failed')}
                         >
-                          Simulate Fail
+                          Fail
                         </button>
                         <button
                           className="btn btn-sm"
-                          style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                          style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '3px 8px', fontSize: '11px' }}
                           onClick={() => handlePayoutStatusUpdate(p._id, 'cancelled')}
                         >
                           Cancel
