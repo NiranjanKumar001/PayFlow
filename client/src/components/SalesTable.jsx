@@ -69,15 +69,19 @@ export default function SalesTable({
           <thead>
             <tr>
               <th className="checkbox-cell">
-                <input
-                  type="checkbox"
-                  className="checkbox-custom"
-                  checked={
-                    sales.filter((s) => s.status === 'pending').length > 0 &&
-                    selectedSales.length === sales.filter((s) => s.status === 'pending').length
-                  }
-                  onChange={handleSelectAllSales}
-                />
+                {sales.some((s) => s.status === 'pending') ? (
+                  <input
+                    type="checkbox"
+                    className="checkbox-custom"
+                    checked={
+                      sales.filter((s) => s.status === 'pending').length > 0 &&
+                      selectedSales.length === sales.filter((s) => s.status === 'pending').length
+                    }
+                    onChange={handleSelectAllSales}
+                  />
+                ) : (
+                  <div style={{ width: '16px', height: '16px', margin: '0 auto' }} />
+                )}
               </th>
               <th>Sale ID</th>
               <th>User</th>
@@ -100,13 +104,16 @@ export default function SalesTable({
               sales.map((sale) => (
                 <tr key={sale._id}>
                   <td className="checkbox-cell">
-                    <input
-                      type="checkbox"
-                      className="checkbox-custom"
-                      disabled={sale.status !== 'pending'}
-                      checked={selectedSales.includes(sale._id)}
-                      onChange={() => handleSelectSale(sale._id)}
-                    />
+                    {sale.status === 'pending' ? (
+                      <input
+                        type="checkbox"
+                        className="checkbox-custom"
+                        checked={selectedSales.includes(sale._id)}
+                        onChange={() => handleSelectSale(sale._id)}
+                      />
+                    ) : (
+                      <div style={{ width: '16px', height: '16px', margin: '0 auto' }} />
+                    )}
                   </td>
                   <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
                     {sale._id.slice(-8)}

@@ -328,7 +328,7 @@ select.form-control {
   appearance: none;
   width: 16px;
   height: 16px;
-  border: 1.5px solid var(--border);
+  border: 1.5px solid #a1a1aa;
   border-radius: 4px;
   background-color: var(--background);
   cursor: pointer;
@@ -337,6 +337,10 @@ select.form-control {
   justify-content: center;
   position: relative;
   transition: var(--transition-fast);
+}
+
+.checkbox-custom:hover:not(:disabled) {
+  border-color: #ffffff;
 }
 
 .checkbox-custom:checked {
