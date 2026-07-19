@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import CustomSelect from './CustomSelect';
 
 export default function StatsCards({ users, sales }) {
   const [selectedUserId, setSelectedUserId] = useState('all');
@@ -13,31 +14,19 @@ export default function StatsCards({ users, sales }) {
   return (
     <div className="stats-row">
       {/* Card 1: Affiliate Spotlight */}
-      <div className="stat-box" style={{ minHeight: '120px', justifyContent: 'space-between' }}>
+      <div className="stat-box" style={{ minHeight: '120px', justifyContent: 'space-between', overflow: 'visible' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '8px' }}>
           <span className="stat-label" style={{ margin: 0 }}>Affiliate Spotlight</span>
-          <select
+          <CustomSelect
+            size="sm"
+            style={{ width: '150px' }}
             value={selectedUserId}
-            onChange={(e) => setSelectedUserId(e.target.value)}
-            style={{
-              background: 'var(--muted)',
-              color: 'var(--foreground)',
-              border: '1.5px solid var(--border)',
-              borderRadius: '4px',
-              padding: '2px 8px',
-              fontSize: '11px',
-              fontWeight: '500',
-              outline: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            <option value="all">Platform Overview</option>
-            {users.map((u) => (
-              <option key={u._id} value={u._id}>
-                {u.name}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => setSelectedUserId(val)}
+            options={[
+              { value: 'all', label: 'Platform Overview' },
+              ...users.map((u) => ({ value: u._id, label: u.name }))
+            ]}
+          />
         </div>
 
         {selectedUserId === 'all' ? (
