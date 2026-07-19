@@ -42,6 +42,10 @@ export default function CustomSelect({ value, onChange, options, placeholder = "
         <div className="custom-select-options">
           {options.length > 7 && (
             <div className="custom-select-search-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="search-icon" style={{ opacity: 0.5, marginLeft: '4px' }}>
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
               <input
                 type="text"
                 placeholder="Search..."
