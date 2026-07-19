@@ -34,7 +34,7 @@ const ClockIcon = ({ size = 16, style }) => (
   </svg>
 );
 
-export default function UsersTable({ users, isLoading }) {
+export default function UsersTable({ users, isLoading, handleTerminateUser }) {
   return (
     <div className="card">
       <div className="card-title">Users Directory</div>
@@ -47,6 +47,7 @@ export default function UsersTable({ users, isLoading }) {
               <th>Trust Status</th>
               <th>Withdrawable Balance</th>
               <th>Last Withdrawal</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -68,21 +69,26 @@ export default function UsersTable({ users, isLoading }) {
                   <td>
                     <div className="skeleton-shimmer" style={{ width: '140px', height: '14px', borderRadius: '4px' }} />
                   </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '80px', height: '24px', borderRadius: '4px' }} />
+                  </td>
                 </tr>
               ))
             ) : users.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center', color: 'hsl(var(--text-secondary))' }}>
+                <td colSpan="6" style={{ textAlign: 'center', color: 'hsl(var(--text-secondary))' }}>
                   No users recorded.
                 </td>
               </tr>
             ) : (
               users.map((u) => (
-              <tr key={u._id}>
+              <tr key={u._id} style={u.isTerminated ? { opacity: 0.5, textDecoration: 'line-through' } : {}}>
                 <td style={{ fontFamily: 'monospace' }}>{u._id}</td>
                 <td style={{ fontWeight: 600 }}>{u.name}</td>
                 <td>
-                  {u.isTrusted ? (
+                  {u.isTerminated ? (
+                    <span style={{ color: 'hsl(var(--text-secondary))', fontSize: '12px' }}>Inactive</span>
+                  ) : u.isTrusted ? (
                     <span style={{ color: '#22c55e', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                       <ShieldCheckIcon size={14} /> Trusted
                     </span>
@@ -99,6 +105,30 @@ export default function UsersTable({ users, isLoading }) {
                   {u.lastWithdrawalAt
                     ? new Date(u.lastWithdrawalAt).toLocaleString()
                     : 'No withdrawals yet'}
+                </td>
+                <td>
+                  {u.isTerminated ? (
+                    <span style={{ color: '#ef4444', fontWeight: 600, fontSize: '11px', textDecoration: 'none', display: 'inline-block' }}>Terminated</span>
+                  ) : (
+                    <button
+                      className="btn btn-secondary"
+                      style={{
+                        padding: '4px 8px',
+                        fontSize: '11px',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        color: '#ef4444',
+                        border: '1px solid rgba(239, 68, 68, 0.2)',
+                        textDecoration: 'none'
+                      }}
+                      onClick={() => {
+                        if (confirm(`Are you sure you want to terminate affiliate user ${u.name}?`)) {
+                          handleTerminateUser(u._id);
+                        }
+                      }}
+                    >
+                      Terminate
+                    </button>
+                  )}
                 </td>
               </tr>
             ))

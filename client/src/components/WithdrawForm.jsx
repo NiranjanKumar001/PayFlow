@@ -15,7 +15,7 @@ export default function WithdrawForm({
           <CustomSelect
             value={newWithdrawal.userId}
             onChange={(val) => setNewWithdrawal({ ...newWithdrawal, userId: val })}
-            options={users.map((u) => ({
+            options={users.filter(u => !u.isTerminated).map((u) => ({
               value: u._id,
               label: `${u.name} (Bal: ₹${u.withdrawableBalance.toFixed(2)})`
             }))}

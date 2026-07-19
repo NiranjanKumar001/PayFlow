@@ -45,6 +45,11 @@ router.post(
       err.status = 404;
       throw err;
     }
+    if (user.isTerminated) {
+      const err = new Error(`User "${userId}" is terminated and cannot register sales`);
+      err.status = 400;
+      throw err;
+    }
 
     const sale = await Sale.create({ userId, brand, earning });
     res.status(201).json(sale);

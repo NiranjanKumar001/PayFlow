@@ -15,7 +15,7 @@ export default function RegisterSaleForm({
           <CustomSelect
             value={newSale.userId}
             onChange={(val) => setNewSale({ ...newSale, userId: val })}
-            options={users.map((u) => ({ value: u._id, label: u.name }))}
+            options={users.filter(u => !u.isTerminated).map((u) => ({ value: u._id, label: u.name }))}
           />
         </div>
 

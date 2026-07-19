@@ -13,11 +13,21 @@ async function handleResponse(response) {
 export const api = {
   // Users
   getUsers: () => fetch(`${API_BASE}/users`).then(handleResponse),
+  createUser: (userData) =>
+    fetch(`${API_BASE}/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    }).then(handleResponse),
   withdraw: (userId, amount) =>
     fetch(`${API_BASE}/users/${userId}/withdraw`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount }),
+    }).then(handleResponse),
+  terminateUser: (userId) =>
+    fetch(`${API_BASE}/users/${userId}/terminate`, {
+      method: 'POST',
     }).then(handleResponse),
 
   // Sales

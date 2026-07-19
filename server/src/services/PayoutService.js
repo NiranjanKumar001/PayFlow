@@ -41,6 +41,11 @@ class PayoutService {
           const user = await User.findById(sale.userId).session(session);
           if (!user) throw new Error(`User not found: ${sale.userId}`);
 
+          // Skip if the user is terminated
+          if (user.isTerminated) {
+            continue;
+          }
+
           // Skip if the user is probationary (not trusted)
           if (!user.isTrusted) {
             continue;
@@ -234,6 +239,12 @@ class PayoutService {
         if (!user) {
           const err = new Error(`User not found: ${userId}`);
           err.status = 404;
+          throw err;
+        }
+
+        if (user.isTerminated) {
+          const err = new Error(`User "${userId}" is terminated and cannot withdraw funds`);
+          err.status = 400;
           throw err;
         }
 

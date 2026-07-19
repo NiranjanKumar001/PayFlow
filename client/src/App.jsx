@@ -11,6 +11,8 @@ import UsersTable from './components/UsersTable';
 import PayoutsTable from './components/PayoutsTable';
 import RegisterSaleForm from './components/RegisterSaleForm';
 import WithdrawForm from './components/WithdrawForm';
+import RegisterUserForm from './components/RegisterUserForm';
+
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -88,7 +90,29 @@ function App() {
     }
   };
 
+  const handleCreateUser = async ({ id, name }) => {
+    try {
+      await api.createUser({ id, name });
+      showToast(`Affiliate "${name}" registered successfully!`);
+      fetchData();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  };
+
+  const handleTerminateUser = async (userId) => {
+    try {
+      await api.terminateUser(userId);
+      showToast(`User "${userId}" has been terminated.`);
+      fetchData();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  };
+
+
   const handleWithdrawal = async (e) => {
+
     e.preventDefault();
     if (!newWithdrawal.amount || parseFloat(newWithdrawal.amount) <= 0) {
       showToast('Withdrawal amount must be a positive number', 'error');
@@ -196,7 +220,13 @@ function App() {
             />
           )}
 
-          {activeTab === 'users' && <UsersTable users={users} isLoading={isLoading} />}
+          {activeTab === 'users' && (
+            <UsersTable
+              users={users}
+              isLoading={isLoading}
+              handleTerminateUser={handleTerminateUser}
+            />
+          )}
 
           {activeTab === 'payouts' && (
             <PayoutsTable
@@ -211,12 +241,16 @@ function App() {
         </div>
 
         <div className="sidebar-column">
-          <RegisterSaleForm
-            users={users}
-            newSale={newSale}
-            setNewSale={setNewSale}
-            handleCreateSale={handleCreateSale}
-          />
+          {activeTab === 'users' ? (
+            <RegisterUserForm handleCreateUser={handleCreateUser} />
+          ) : (
+            <RegisterSaleForm
+              users={users}
+              newSale={newSale}
+              setNewSale={setNewSale}
+              handleCreateSale={handleCreateSale}
+            />
+          )}
 
           <WithdrawForm
             users={users}
@@ -225,6 +259,7 @@ function App() {
             handleWithdrawal={handleWithdrawal}
           />
         </div>
+
       </div>
     </>
   );
