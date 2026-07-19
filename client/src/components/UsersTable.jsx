@@ -34,7 +34,21 @@ const ClockIcon = ({ size = 16, style }) => (
   </svg>
 );
 
+import { useState } from 'react';
+import Pagination from './Pagination';
+
 export default function UsersTable({ users, isLoading, handleTerminateUser }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Auto-adjust page if current page is out of bounds after search/filter/update
+  const maxPage = Math.max(1, Math.ceil(users.length / itemsPerPage));
+  const activePage = currentPage > maxPage ? maxPage : currentPage;
+
+  const paginatedUsers = users.slice(
+    (activePage - 1) * itemsPerPage,
+    activePage * itemsPerPage
+  );
   return (
     <div className="card">
       <div className="card-title">Users Directory</div>
@@ -81,7 +95,7 @@ export default function UsersTable({ users, isLoading, handleTerminateUser }) {
                 </td>
               </tr>
             ) : (
-              users.map((u) => (
+              paginatedUsers.map((u) => (
               <tr key={u._id} style={u.isTerminated ? { opacity: 0.65 } : {}}>
                 <td style={{ fontFamily: 'monospace' }}>{u._id}</td>
                 <td style={{ fontWeight: 600, textDecoration: u.isTerminated ? 'line-through' : 'none' }}>{u.name}</td>
@@ -152,6 +166,13 @@ export default function UsersTable({ users, isLoading, handleTerminateUser }) {
           </tbody>
         </table>
       </div>
+      <Pagination
+        totalItems={users.length}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+        currentPage={activePage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }

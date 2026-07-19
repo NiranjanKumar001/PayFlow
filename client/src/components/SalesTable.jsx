@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import CustomSelect from './CustomSelect';
+import Pagination from './Pagination';
 
 export default function SalesTable({
   sales,
@@ -12,6 +14,24 @@ export default function SalesTable({
   handleReconcileSale,
   isLoading,
 }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Sync: reset page to 1 if filters change to avoid empty pages
+  const filterKey = `${salesFilter.userId}-${salesFilter.status}`;
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey);
+  if (filterKey !== prevFilterKey) {
+    setCurrentPage(1);
+    setPrevFilterKey(filterKey);
+  }
+
+  const maxPage = Math.max(1, Math.ceil(sales.length / itemsPerPage));
+  const activePage = currentPage > maxPage ? maxPage : currentPage;
+
+  const paginatedSales = sales.slice(
+    (activePage - 1) * itemsPerPage,
+    activePage * itemsPerPage
+  );
   return (
     <div className="card">
       <div className="card-title">
@@ -130,7 +150,7 @@ export default function SalesTable({
                 </td>
               </tr>
             ) : (
-              sales.map((sale) => (
+              paginatedSales.map((sale) => (
                 <tr key={sale._id}>
                   <td className="checkbox-cell">
                     <input
@@ -186,6 +206,13 @@ export default function SalesTable({
           </tbody>
         </table>
       </div>
+      <Pagination
+        totalItems={sales.length}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+        currentPage={activePage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }

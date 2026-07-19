@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import CustomSelect from './CustomSelect';
+import Pagination from './Pagination';
 
 export default function PayoutsTable({
   payouts,
@@ -8,6 +10,24 @@ export default function PayoutsTable({
   handlePayoutStatusUpdate,
   isLoading,
 }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Sync: reset page to 1 if filter changes to avoid empty pages
+  const filterKey = `${payoutsFilter.userId}`;
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey);
+  if (filterKey !== prevFilterKey) {
+    setCurrentPage(1);
+    setPrevFilterKey(filterKey);
+  }
+
+  const maxPage = Math.max(1, Math.ceil(payouts.length / itemsPerPage));
+  const activePage = currentPage > maxPage ? maxPage : currentPage;
+
+  const paginatedPayouts = payouts.slice(
+    (activePage - 1) * itemsPerPage,
+    activePage * itemsPerPage
+  );
   return (
     <div className="card">
       <div className="card-title">
@@ -75,7 +95,7 @@ export default function PayoutsTable({
                 </td>
               </tr>
             ) : (
-              payouts.map((p) => (
+              paginatedPayouts.map((p) => (
                 <tr key={p._id}>
                   <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
                     {p._id.slice(-8)}
@@ -126,6 +146,13 @@ export default function PayoutsTable({
           </tbody>
         </table>
       </div>
+      <Pagination
+        totalItems={payouts.length}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+        currentPage={activePage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }
