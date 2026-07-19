@@ -1,16 +1,32 @@
-# React + Vite
+# PayFlow Client Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The modern, highly responsive frontend client for the **PayFlow User Payout Management System**, built as a Single Page Application (SPA) using React 19 and Vite.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*   **Premium Theme**: Styled with a dark-mode glassmorphic aesthetic built with CSS variables.
+*   **Custom Form Controls**: Custom dropdown inputs (`CustomSelect`) matching Shadcn UI's look and feel, and clean styling that hides browser defaults like numeric spinners.
+*   **State Coordination**: Automatically refreshes metrics, balances, sales records, and payout logs upon any mutation.
+*   **Bulk Actions**: Easily select multiple pending affiliate sales to batch approve/reject them in a single transaction.
+*   **Failure Simulation**: Built-in simulator controls to fail or cancel withdrawals to test payment gateway failure and automatic balance recovery workflows.
 
-## React Compiler
+## 📁 Component Directory
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+All UI components are modularized under `src/components/`:
+*   `CustomSelect.jsx` - Reusable dropdown selector.
+*   `Toast.jsx` - Success/error popup notifications.
+*   `Header.jsx` - App logo and navigation tab bar.
+*   `StatsCards.jsx` - Display panels for system-wide stats and user balances.
+*   `SalesTable.jsx` - List of sales, bulk action selectors, and filter headers.
+*   `UsersTable.jsx` - Directory of registered users and their current withdrawable balance.
+*   `PayoutsTable.jsx` - Ledger of payouts, transaction references, and simulated fail controls.
+*   `RegisterSaleForm.jsx` - Form to create a new pending affiliate sale.
+*   `WithdrawForm.jsx` - Form to request payouts for affiliate balances.
 
-## Expanding the Oxlint configuration
+## 🛠️ Development & Commands
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Run commands from the `client/` subdirectory:
+
+*   `npm run dev` - Run Vite development server on `http://localhost:5173/`
+*   `npm run build` - Generate production build static assets in the `dist` directory
+*   `npm run preview` - Locally preview the compiled production build

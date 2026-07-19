@@ -534,8 +534,18 @@ User-Payout-Management-System/
 │   └── package.json
 ├── client/                        # React Frontend (Vite)
 │   ├── src/
+│   │   ├── components/            # Modular dashboard subcomponents
+│   │   │   ├── CustomSelect.jsx   # Reusable Shadcn-style dropdowns
+│   │   │   ├── Toast.jsx          # Alert/notification banner
+│   │   │   ├── Header.jsx         # App header & active tab navigation
+│   │   │   ├── StatsCards.jsx     # Overview metrics & balances
+│   │   │   ├── SalesTable.jsx     # Sales grid table with filters
+│   │   │   ├── UsersTable.jsx     # User directory grid
+│   │   │   ├── PayoutsTable.jsx   # Ledger history & fail simulations
+│   │   │   ├── RegisterSaleForm.jsx # Add new sales panel form
+│   │   │   └── WithdrawForm.jsx   # Withdraw balance panel form
 │   │   ├── services/              # API client functions
-│   │   ├── App.jsx                # Dashboard Application layout
+│   │   ├── App.jsx                # Dashboard main state coordinator
 │   │   ├── App.css                # Style override file
 │   │   ├── index.css              # Premium global styles
 │   │   └── main.jsx               # Vite entry point
