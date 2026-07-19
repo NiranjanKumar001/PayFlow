@@ -18,12 +18,22 @@ app.use(express.json());
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // ─── API Routes ─────────────────────────────────────────────────────────────
+// Prefix routes
 app.use('/api/users', usersRouter);
 app.use('/api/sales', salesRouter);
 app.use('/api/payouts', payoutsRouter);
 app.use('/api/jobs', jobsRouter);
+
+// Fallback root routes to support direct base URL environment variables
+app.use('/users', usersRouter);
+app.use('/sales', salesRouter);
+app.use('/payouts', payoutsRouter);
+app.use('/jobs', jobsRouter);
 
 // ─── Error Handler ──────────────────────────────────────────────────────────
 app.use(errorHandler);
