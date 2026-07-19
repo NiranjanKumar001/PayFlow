@@ -1,3 +1,39 @@
+const ShieldCheckIcon = ({ size = 16, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ display: 'inline-block', verticalAlign: 'middle', ...style }}
+  >
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <path d="m9 11 2 2 4-4" />
+  </svg>
+);
+
+const ClockIcon = ({ size = 16, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ display: 'inline-block', verticalAlign: 'middle', ...style }}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
+
 export default function UsersTable({ users }) {
   return (
     <div className="card">
@@ -21,11 +57,11 @@ export default function UsersTable({ users }) {
                 <td>
                   {u.isTrusted ? (
                     <span style={{ color: '#22c55e', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      🛡️ Trusted
+                      <ShieldCheckIcon size={14} /> Trusted
                     </span>
                   ) : (
                     <span style={{ color: '#eab308', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      ⏳ Probation ({u.approvedSalesCount || 0}/3)
+                      <ClockIcon size={14} /> Probation ({u.approvedSalesCount || 0}/3)
                     </span>
                   )}
                 </td>

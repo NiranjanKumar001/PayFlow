@@ -1,6 +1,42 @@
 import { useState } from 'react';
 import CustomSelect from './CustomSelect';
 
+const ShieldCheckIcon = ({ size = 16, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ display: 'inline-block', verticalAlign: 'middle', ...style }}
+  >
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <path d="m9 11 2 2 4-4" />
+  </svg>
+);
+
+const ClockIcon = ({ size = 16, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ display: 'inline-block', verticalAlign: 'middle', ...style }}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
+
 export default function StatsCards({ users, sales }) {
   const [selectedUserId, setSelectedUserId] = useState('all');
 
@@ -44,12 +80,12 @@ export default function StatsCards({ users, sales }) {
                 ₹{selectedUser.withdrawableBalance.toFixed(2)}
               </div>
               {selectedUser.isTrusted ? (
-                <span className="badge badge-success" style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '4px', textTransform: 'none', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.2)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                  🛡️ Trusted
+                <span className="badge badge-success" style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '4px', textTransform: 'none', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.2)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <ShieldCheckIcon size={12} /> Trusted
                 </span>
               ) : (
-                <span className="badge badge-warning" style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '4px', textTransform: 'none', background: 'rgba(234, 179, 8, 0.1)', color: '#eab308', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                  ⏳ Probation ({selectedUser.approvedSalesCount || 0}/3)
+                <span className="badge badge-warning" style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '4px', textTransform: 'none', background: 'rgba(234, 179, 8, 0.1)', color: '#eab308', border: '1px solid rgba(234, 179, 8, 0.2)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <ClockIcon size={12} /> Probation ({selectedUser.approvedSalesCount || 0}/3)
                 </span>
               )}
             </div>
@@ -73,10 +109,16 @@ export default function StatsCards({ users, sales }) {
       {/* Card 3: Platform Reputation Summary */}
       <div className="stat-box" style={{ justifyContent: 'space-between' }}>
         <div className="stat-label">Reputation Summary</div>
-        <div className="stat-val" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '24px' }}>
-          <span>🛡️ {trustedCount}</span>
-          <span style={{ fontSize: '14px', color: 'var(--muted-foreground)' }}>vs</span>
-          <span>⏳ {probationCount}</span>
+        <div className="stat-val" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '24px', fontWeight: 600 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#22c55e' }}>
+            <ShieldCheckIcon size={22} />
+            <span>{trustedCount}</span>
+          </div>
+          <span style={{ fontSize: '14px', color: 'var(--muted-foreground)', fontWeight: 400 }}>vs</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#eab308' }}>
+            <ClockIcon size={22} />
+            <span>{probationCount}</span>
+          </div>
         </div>
         <div style={{ fontSize: '11px', color: 'var(--muted-foreground)', marginTop: '4px', display: 'flex', justifyContent: 'space-between' }}>
           <span>Trusted Affiliates</span>
