@@ -589,6 +589,16 @@ select.form-control {
   text-align: center;
 }
 
+.custom-select-more-results {
+  padding: 6px 12px;
+  font-size: 10px;
+  color: var(--muted-foreground);
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
 .custom-select-option {
   padding: 8px 12px;
   font-size: 14px;

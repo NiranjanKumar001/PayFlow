@@ -28,6 +28,8 @@ export default function CustomSelect({ value, onChange, options, placeholder = "
     opt.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const displayedOptions = filteredOptions.slice(0, 30);
+
   return (
     <div className={`custom-select-container ${size}`} ref={dropdownRef} style={style}>
       <div className="custom-select-trigger" onClick={() => setIsOpen(!isOpen)}>
@@ -51,21 +53,28 @@ export default function CustomSelect({ value, onChange, options, placeholder = "
             </div>
           )}
           <div className="custom-select-list">
-            {filteredOptions.length === 0 ? (
+            {displayedOptions.length === 0 ? (
               <div className="custom-select-no-results">No results found</div>
             ) : (
-              filteredOptions.map((opt) => (
-                <div
-                  key={opt.value}
-                  className={`custom-select-option ${opt.value === value ? 'selected' : ''}`}
-                  onClick={() => {
-                    onChange(opt.value);
-                    setIsOpen(false);
-                  }}
-                >
-                  {opt.label}
-                </div>
-              ))
+              <>
+                {displayedOptions.map((opt) => (
+                  <div
+                    key={opt.value}
+                    className={`custom-select-option ${opt.value === value ? 'selected' : ''}`}
+                    onClick={() => {
+                      onChange(opt.value);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {opt.label}
+                  </div>
+                ))}
+                {filteredOptions.length > 30 && (
+                  <div className="custom-select-more-results">
+                    + {filteredOptions.length - 30} more results (type to narrow down)
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
