@@ -34,7 +34,7 @@ const ClockIcon = ({ size = 16, style }) => (
   </svg>
 );
 
-export default function UsersTable({ users }) {
+export default function UsersTable({ users, isLoading }) {
   return (
     <div className="card">
       <div className="card-title">Users Directory</div>
@@ -50,7 +50,34 @@ export default function UsersTable({ users }) {
             </tr>
           </thead>
           <tbody>
-            {users.map((u) => (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, idx) => (
+                <tr key={idx}>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '150px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '100px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '90px', height: '18px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '70px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '140px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : users.length === 0 ? (
+              <tr>
+                <td colSpan="5" style={{ textAlign: 'center', color: 'hsl(var(--text-secondary))' }}>
+                  No users recorded.
+                </td>
+              </tr>
+            ) : (
+              users.map((u) => (
               <tr key={u._id}>
                 <td style={{ fontFamily: 'monospace' }}>{u._id}</td>
                 <td style={{ fontWeight: 600 }}>{u.name}</td>
@@ -74,7 +101,8 @@ export default function UsersTable({ users }) {
                     : 'No withdrawals yet'}
                 </td>
               </tr>
-            ))}
+            ))
+            )}
           </tbody>
         </table>
       </div>

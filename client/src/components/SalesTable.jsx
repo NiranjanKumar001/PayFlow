@@ -10,6 +10,7 @@ export default function SalesTable({
   handleSelectSale,
   handleBulkReconcile,
   handleReconcileSale,
+  isLoading,
 }) {
   return (
     <div className="card">
@@ -90,7 +91,39 @@ export default function SalesTable({
             </tr>
           </thead>
           <tbody>
-            {sales.length === 0 ? (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, idx) => (
+                <tr key={idx}>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '16px', height: '16px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '60px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '90px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '60px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '70px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '55px', height: '18px', borderRadius: '999px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '60px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '75px', height: '18px', borderRadius: '999px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '110px', height: '28px', borderRadius: '4px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : sales.length === 0 ? (
               <tr>
                 <td colSpan="9" style={{ textAlign: 'center', color: 'hsl(var(--text-secondary))' }}>
                   No sales records found.

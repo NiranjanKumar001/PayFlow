@@ -174,7 +174,7 @@ function App() {
         handleRunAdvancePayoutJob={handleRunAdvancePayoutJob}
       />
 
-      <StatsCards users={users} sales={sales} />
+      <StatsCards users={users} sales={sales} isLoading={isLoading} />
 
       <div className="dashboard-grid">
         <div className="main-content-column">
@@ -189,10 +189,11 @@ function App() {
               handleSelectSale={handleSelectSale}
               handleBulkReconcile={handleBulkReconcile}
               handleReconcileSale={handleReconcileSale}
+              isLoading={isLoading}
             />
           )}
 
-          {activeTab === 'users' && <UsersTable users={users} />}
+          {activeTab === 'users' && <UsersTable users={users} isLoading={isLoading} />}
 
           {activeTab === 'payouts' && (
             <PayoutsTable
@@ -201,6 +202,7 @@ function App() {
               payoutsFilter={payoutsFilter}
               setPayoutsFilter={setPayoutsFilter}
               handlePayoutStatusUpdate={handlePayoutStatusUpdate}
+              isLoading={isLoading}
             />
           )}
         </div>

@@ -37,7 +37,27 @@ const ClockIcon = ({ size = 16, style }) => (
   </svg>
 );
 
-export default function StatsCards({ users, sales }) {
+export default function StatsCards({ users, sales, isLoading }) {
+  if (isLoading) {
+    return (
+      <div className="stats-row">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="stat-box" style={{ justifyContent: 'space-between', minHeight: '120px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '8px' }}>
+              <div className="skeleton-shimmer" style={{ width: '90px', height: '14px', borderRadius: '4px' }} />
+              {i === 1 && <div className="skeleton-shimmer" style={{ width: '120px', height: '24px', borderRadius: '6px' }} />}
+            </div>
+            <div className="skeleton-shimmer" style={{ width: i === 2 ? '40px' : '140px', height: '32px', borderRadius: '6px', margin: '8px 0' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', marginTop: '4px' }}>
+              <div className="skeleton-shimmer" style={{ width: '110px', height: '10px', borderRadius: '2px' }} />
+              {i > 1 && <div className="skeleton-shimmer" style={{ width: '60px', height: '10px', borderRadius: '2px' }} />}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   const [selectedUserId, setSelectedUserId] = useState('all');
 
   const totalPlatformBalance = users.reduce((sum, u) => sum + u.withdrawableBalance, 0);

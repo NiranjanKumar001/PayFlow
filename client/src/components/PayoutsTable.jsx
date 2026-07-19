@@ -6,6 +6,7 @@ export default function PayoutsTable({
   payoutsFilter,
   setPayoutsFilter,
   handlePayoutStatusUpdate,
+  isLoading,
 }) {
   return (
     <div className="card">
@@ -38,7 +39,36 @@ export default function PayoutsTable({
             </tr>
           </thead>
           <tbody>
-            {payouts.length === 0 ? (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, idx) => (
+                <tr key={idx}>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '80px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '100px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '70px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '60px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '75px', height: '18px', borderRadius: '999px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '80px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '80px', height: '14px', borderRadius: '4px' }} />
+                  </td>
+                  <td>
+                    <div className="skeleton-shimmer" style={{ width: '120px', height: '28px', borderRadius: '4px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : payouts.length === 0 ? (
               <tr>
                 <td colSpan="8" style={{ textAlign: 'center', color: 'hsl(var(--text-secondary))' }}>
                   No payout transactions recorded.
