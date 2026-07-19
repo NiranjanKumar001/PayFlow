@@ -36,11 +36,14 @@ function App() {
   // Fetch all data
   const fetchData = async () => {
     setIsLoading(true);
+    // Minimum 800ms delay to prevent jarring UI flashing on fast connections
+    const delay = new Promise((resolve) => setTimeout(resolve, 800));
     try {
       const [fetchedUsers, fetchedSales, fetchedPayouts] = await Promise.all([
         api.getUsers(),
         api.getSales(salesFilter),
         api.getPayouts(payoutsFilter.userId),
+        delay,
       ]);
       setUsers(fetchedUsers);
       setSales(fetchedSales);
