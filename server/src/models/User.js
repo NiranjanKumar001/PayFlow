@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    isTrusted: {
+      type: Boolean,
+      default: false,
+    },
+    approvedSalesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

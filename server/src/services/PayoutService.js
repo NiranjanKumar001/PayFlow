@@ -38,6 +38,14 @@ class PayoutService {
         const userAdvances = {};
 
         for (const sale of eligibleSales) {
+          const user = await User.findById(sale.userId).session(session);
+          if (!user) throw new Error(`User not found: ${sale.userId}`);
+
+          // Skip if the user is probationary (not trusted)
+          if (!user.isTrusted) {
+            continue;
+          }
+
           const advanceAmount = +(sale.earning * 0.10).toFixed(2);
 
           // Update sale: mark as paid
@@ -139,6 +147,13 @@ class PayoutService {
           // Credit remaining: earning - advance already paid
           adjustmentAmount = +(sale.earning - sale.advanceAmount).toFixed(2);
           await user.credit(adjustmentAmount, session);
+
+          // Update trust stats
+          user.approvedSalesCount += 1;
+          if (user.approvedSalesCount >= 3 && !user.isTrusted) {
+            user.isTrusted = true;
+          }
+          await user.save({ session });
         } else {
           // Rejected: claw back the advance
           adjustmentAmount = +(-sale.advanceAmount).toFixed(2);

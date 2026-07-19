@@ -17,8 +17,8 @@ async function connectDB() {
     const count = await User.countDocuments();
     if (count === 0) {
       const seedUsers = [
-        { _id: 'john_doe', name: 'John Doe' },
-        { _id: 'jane_smith', name: 'Jane Smith' },
+        { _id: 'john_doe', name: 'John Doe', isTrusted: true, approvedSalesCount: 3 },
+        { _id: 'jane_smith', name: 'Jane Smith', isTrusted: false, approvedSalesCount: 0 },
       ];
       await User.insertMany(seedUsers);
       console.log(`  [Database] Seeded ${seedUsers.length} demo users: ${seedUsers.map(u => u._id).join(', ')}`);
