@@ -1,4 +1,4 @@
-# User Payout Management System
+# PayFlow
 
 A comprehensive **Low-Level Design (LLD)** and working implementation for managing user payouts in an affiliate sales platform — built with **Node.js**, **Express**, **MongoDB**, and a modern **React interactive dashboard**.
 
@@ -449,8 +449,8 @@ If the gateway later reports the withdrawal as failed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/NiranjanKumar001/User-Payout-Management-System.git
-cd User-Payout-Management-System
+git clone https://github.com/NiranjanKumar001/PayFlow.git
+cd PayFlow
 
 # Install all dependencies (server + client)
 npm install
@@ -596,7 +596,7 @@ The automated test suites exercise the full lifecycle:
 ## 📂 Project Structure
 
 ```
-User-Payout-Management-System/
+PayFlow/
 ├── server/                        # Backend
 │   ├── src/
 │   │   ├── db.js                  # MongoDB Atlas connection & seeding
