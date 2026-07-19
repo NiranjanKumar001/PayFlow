@@ -10,15 +10,27 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo:6.0
-        ports:
-          - 27017:27017
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Start MongoDB Replica Set
+        run: |
+          docker run --name mongodb -d -p 27017:27017 mongo:6.0 mongod --replSet rs0 --bind_ip_all
+          
+          echo "Waiting for MongoDB to start..."
+          until docker exec mongodb mongosh --eval "db.runCommand({ping: 1})" >/dev/null 2>&1; do
+            sleep 1
+          done
+          
+          echo "Initiating replica set..."
+          docker exec mongodb mongosh --eval "rs.initiate({_id: 'rs0', members: [{_id: 0, host: '127.0.0.1:27017'}]})"
+          
+          echo "Waiting for replica set to elect primary..."
+          until docker exec mongodb mongosh --eval "db.hello().isWritablePrimary" 2>/dev/null | grep -q "true"; do
+            sleep 1
+          done
+          echo "MongoDB Replica Set is ready!"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -37,4 +49,4 @@ jobs:
       - name: Run Modular Backend Tests
         run: npm test
         env:
-          MONGODB_URI: mongodb://localhost:27017/payout_system_test
+          MONGODB_URI: mongodb://127.0.0.1:27017/payout_system_test?replicaSet=rs0
