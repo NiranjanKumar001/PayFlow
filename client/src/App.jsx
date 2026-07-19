@@ -31,7 +31,7 @@ function App() {
 
   // Notifications
   const [toast, setToast] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch all data
   const fetchData = async () => {
