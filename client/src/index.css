@@ -526,7 +526,7 @@ select.form-control {
 
 .custom-select-trigger .chevron {
   transition: transform var(--transition-fast);
-  color: hsl(var(--text-muted));
+  color: var(--muted-foreground);
 }
 
 .custom-select-trigger .chevron.open {
@@ -538,7 +538,7 @@ select.form-control {
   top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  background-color: hsl(var(--card));
+  background-color: var(--popover);
   border: 1px solid var(--border);
   border-radius: 6px;
   z-index: 50;
